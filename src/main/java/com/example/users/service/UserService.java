@@ -24,12 +24,7 @@ public class UserService {
         return userRepository.getById(id);
     }
 
-    public UserEntity createUser(UserEntity user) throws BindException {
-        BindingResult bindingResult = new MapBindingResult(emptyMap(), "");
-        System.out.println("======throw=====");
-        if(!bindingResult.getAllErrors().isEmpty()){
-            throw new BindException(bindingResult);
-        }
+    public UserEntity createUser(UserEntity user) {
         return userRepository.save(user);
     }
 

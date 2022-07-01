@@ -5,12 +5,11 @@ import com.example.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-@Validated
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -28,7 +27,10 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public UserEntity createUser(@Valid @RequestBody UserEntity user) throws BindException {
+    public UserEntity createUser(@Valid @RequestBody UserEntity user, BindingResult bindingResult) throws BindException {
+        if(!bindingResult.getAllErrors().isEmpty()){
+            throw new BindException(bindingResult);
+        }
         return userService.createUser(user);
     }
 

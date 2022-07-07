@@ -21,7 +21,7 @@ public class User extends AuditEntity {
     private Date birthday;
 
 
-    @Pattern(message = "sai dinh dang phone", regexp = "^[0-9]\\d{10}$")
+    @Pattern(message = "sai dinh dang phone", regexp = "^\\d{10}$")
     @Size(max = 10, message = "vuot qua so ki tu")
     private String phone;
 

@@ -1,10 +1,10 @@
 package com.example.users.controller;
 
+import com.example.users.converter.UserConverter;
+import com.example.users.dto.UserDTO;
 import com.example.users.entity.UserEntity;
-import com.example.users.service.UserService;
+import com.example.users.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -14,7 +14,10 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired
-    UserService userService;
+    private IUserService userService;
+
+    @Autowired
+    private UserConverter userConverter;
 
     @GetMapping("/listUser")
     public List<UserEntity> getAllUser() {
@@ -27,16 +30,16 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public UserEntity createUser(@Valid @RequestBody UserEntity user, BindingResult bindingResult) throws BindException {
-        if(!bindingResult.getAllErrors().isEmpty()){
-            throw new BindException(bindingResult);
-        }
-        return userService.createUser(user);
+    public UserDTO createUser(@Valid @RequestBody UserDTO userDTO) {
+//        if(!bindingResult.getAllErrors().isEmpty()){
+//            throw new BindException(bindingResult);
+//        }
+        return userService.createUser(userDTO);
     }
 
     @PutMapping("/user/{userId}")
-    public UserEntity updateUser(@RequestBody UserEntity user, @PathVariable(name = "userId") Long id) {
-        user.setId(id);
+    public UserDTO updateUser(@RequestBody UserDTO user, @PathVariable(name = "userId") Long id) {
+//        user.setId(id);
         return userService.updateUser(user);
     }
 

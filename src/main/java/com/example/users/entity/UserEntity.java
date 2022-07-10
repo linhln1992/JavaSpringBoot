@@ -2,13 +2,14 @@ package com.example.users.entity;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -18,11 +19,16 @@ public class UserEntity extends AuditEntity {
     @Size(max = 50, message = "vuot qua so ki tu")
     private String name;
 
-    @NotNull(message = "chua nhap birthday")
+    @NotNull(message = "Chua nhap password")
+    @Size(max = 15, message = "Vuot qua 15 ky tu cho phep")
+    @Pattern(message = "Sai dinh dang password", regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$")
+    private String password;
+
+//    @NotNull(message = "chua nhap birthday")
     private Date birthday;
 
 
-    @Pattern(message = "sai dinh dang phone", regexp = "^[0-9]\\d{10}$")
+//    @Pattern(message = "sai dinh dang phone", regexp = "^[0-9]\\d{10}$")
     @Size(max = 10, message = "vuot qua so ki tu")
     @NotNull(message = "chua nhap phone")
     private String phone;
@@ -38,4 +44,14 @@ public class UserEntity extends AuditEntity {
 
     @NotNull(message = "chua nhap gender")
     private String gender;
+
+    @ManyToMany
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<RoleEntity> roles = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "country_id")
+    private CountryEntity country;
 }

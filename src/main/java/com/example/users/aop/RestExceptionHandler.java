@@ -8,6 +8,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -16,12 +17,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-    @Override
-    protected ResponseEntity<Object> handleBindException(
-            BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+public class RestExceptionHandler  {
+
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<Object> handleBindException(
+            BindException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("result", 1);
+//        body.put("result", 1);
         List<String> fields = ex.getBindingResult().getFieldErrors().stream().map(FieldError::getField).collect(Collectors.toList());
         List<FieldError> fieldErrors =  ex.getBindingResult().getFieldErrors();
         //Get all errors
@@ -48,15 +50,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             }
         }
 
-        return new ResponseEntity<>(body, headers, HttpStatus.OK);
+        return new ResponseEntity<>(body, null, HttpStatus.OK);
     }
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleOtherException(HttpServletRequest request, Exception ex) {
-//        CommonUtil.commonLogException(ex);
-        return new ResponseEntity<>(
-                new ResponseModel(1, null, "Constant.CM9007"),
-                HttpStatus.INTERNAL_SERVER_ERROR
-        );
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<?> handleOtherException(HttpServletRequest request, Exception ex) {
+////        CommonUtil.commonLogException(ex);
+//        return new ResponseEntity<>(
+//                new ResponseModel(1, null, "Constant.CM9007"),
+//                HttpStatus.INTERNAL_SERVER_ERROR
+//        );
+//    }
 
 }

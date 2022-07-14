@@ -52,13 +52,13 @@ public class RestExceptionHandler  {
 
         return new ResponseEntity<>(body, null, HttpStatus.OK);
     }
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<?> handleOtherException(HttpServletRequest request, Exception ex) {
-////        CommonUtil.commonLogException(ex);
-//        return new ResponseEntity<>(
-//                new ResponseModel(1, null, "Constant.CM9007"),
-//                HttpStatus.INTERNAL_SERVER_ERROR
-//        );
-//    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleOtherException(HttpServletRequest request, Exception ex) {
+//        CommonUtil.commonLogException(ex);
+        return new ResponseEntity<>(
+                new ResponseModel(1, null, "Constant.CM9007"),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
 
 }
